@@ -28,6 +28,9 @@ jobs:
           sleep 5
         done
         
+        # Instalar ldid
+        brew install ldid
+        
         cd ARIYAN_IOS
         make clean package
     
