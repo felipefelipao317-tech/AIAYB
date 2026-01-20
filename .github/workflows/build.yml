@@ -10,14 +10,14 @@ jobs:
   build:
     runs-on: macos-latest
     env:
-      THEOS: ~/theos
+      THEOS: ${{ runner.home }}/theos
     
     steps:
     - name: Checkout
       uses: actions/checkout@v3
     
     - name: Install Theos
-      run: git clone --depth=1 https://github.com/theos/theos.git ~/theos
+      run: git clone --depth=1 https://github.com/theos/theos.git $THEOS
     
     - name: Update Theos
       run: $THEOS/bin/update-theos
