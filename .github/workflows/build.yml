@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    env:
+      THEOS: ~/theos
     
     steps:
     - name: Checkout
@@ -18,14 +20,13 @@ jobs:
       run: git clone --depth=1 https://github.com/theos/theos.git ~/theos
     
     - name: Update Theos
-      run: ~/theos/bin/update-theos
+      run: $THEOS/bin/update-theos
     
     - name: Install iOS SDK
-      run: ~/theos/bin/install-sdk latest
+      run: $THEOS/bin/install-sdk latest
     
     - name: Build Tweak
       run: |
-        export THEOS=~/theos
         cd "ARIYAN_IOS"
         make clean package
     
