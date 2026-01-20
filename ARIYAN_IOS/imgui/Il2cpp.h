@@ -6,6 +6,7 @@
 #include <codecvt>
 #include <locale>
 #include <dlfcn.h>
+#include <vector>
 
 using namespace std;
 
