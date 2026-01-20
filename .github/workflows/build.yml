@@ -18,7 +18,16 @@ jobs:
         export THEOS=$(pwd)/theos
         git clone --depth=1 https://github.com/theos/theos.git $THEOS
         $THEOS/bin/update-theos
-        $THEOS/bin/install-sdk latest
+        
+        # Tentar instalar SDK com retry
+        for i in {1..3}; do
+          echo "Tentativa $i de instalar SDK..."
+          if $THEOS/bin/install-sdk latest; then
+            break
+          fi
+          sleep 5
+        done
+        
         cd ARIYAN_IOS
         make clean package
     
