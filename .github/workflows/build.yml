@@ -1,0 +1,45 @@
+name: Build iOS Tweak
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Install Theos
+      run: git clone --depth=1 https://github.com/theos/theos.git ~/theos
+    
+    - name: Update Theos
+      run: ~/theos/bin/update-theos
+    
+    - name: Install iOS SDK
+      run: ~/theos/bin/install-sdk latest
+    
+    - name: Build Tweak
+      run: |
+        export THEOS=~/theos
+        cd ARIYAN_IOS
+        make clean package
+    
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      if: success()
+      with:
+        name: FF-Package
+        path: ARIYAN_IOS/packages/
+    
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ARIYAN_IOS/packages/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
